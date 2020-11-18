@@ -1,5 +1,6 @@
 import BasicLayout from '@/layouts/BasicLayout';
 import Dashboard from '@/pages/Dashboard';
+import Sendmsg from './pages/sendmsg';
 import Tasks from './pages/tasks';
 import TaskDetails from './pages/tasksdetail';
 
@@ -18,8 +19,11 @@ const routerConfig = [
         component: Tasks,
         exact: true,
       },{
-        path: '/tasks/detail',
+        path: '/tasks/detail/:id',
         component: TaskDetails
+      },{
+        path: '/tasks/sendmsg',
+        component: Sendmsg
       }
     ],
   },

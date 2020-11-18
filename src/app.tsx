@@ -6,7 +6,7 @@ const appConfig = {
   app: {
     rootId: 'ice-container',
     addProvider: ({ children }) => (
-      <AplProvider>
+      <AplProvider >
           {children}
       </AplProvider>
 

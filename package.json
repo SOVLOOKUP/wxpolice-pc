@@ -3,12 +3,16 @@
   "version": "0.1.0",
   "description": "轻量级模板，使用 TypeScript，仅包含基础的 Layout。",
   "dependencies": {
+    "@ahooksjs/use-url-state": "^2.5.2",
     "@alifd/next": "^1.19.4",
     "@alifd/theme-design-pro": "^0.x",
     "@apollo/client": "^3.2.5",
     "ahooks": "^2.7.1",
+    "antd": "^4.8.4",
+    "form-render": "^0.8.10",
     "graphql": "^15.4.0",
     "moment": "^2.29.1",
+    "node-sass": "^5.0.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1"
   },
@@ -21,9 +25,9 @@
     "stylelint": "^13.2.0"
   },
   "scripts": {
-    "start": "icejs start",
-    "build": "icejs build",
-    "lint": "npm run eslint && npm run stylelint",
+    "start": "sudo icejs start",
+    "build": "sudo icejs build",
+    "lint": "cnpm run eslint && cnpm run stylelint",
     "eslint": "eslint --cache --ext .js,.jsx ./",
     "stylelint": "stylelint ./**/*.scss"
   },

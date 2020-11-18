@@ -1,4 +1,4 @@
-import { useQuery, gql } from '@apollo/client';
+import { useQuery, gql, useLazyQuery } from '@apollo/client';
 
 const getdata = (offset:number = 0,limit:number = 10) => useQuery(gql`
   query MyQuery($offset: Int!,$limit: Int!) {
@@ -21,6 +21,23 @@ const getdata = (offset:number = 0,limit:number = 10) => useQuery(gql`
     },
   });
 
+const getdetaildata = () => useLazyQuery(gql`
+query MyQuery($id: Int!) {
+  wxpolice_wx_tasks(where: {id: {_eq: $id}}) {
+    content
+    deadline
+    dispatch_time
+    feedback_id
+    target
+    task_name
+    template_data
+    template_id
+    id
+  }
+}`);
+
+
+  
 // const lazygetdata = (offset:number = 0,limit:number = 10) => useLazyQuery(gql`
 //   query MyQuery($offset: Int!,$limit: Int!) {
 //     wxpolice_wx_tasks_aggregate {
@@ -51,4 +68,4 @@ const getdata = (offset:number = 0,limit:number = 10) => useQuery(gql`
 //     }
 //   }`);
 
-export { getdata }
+export { getdata,getdetaildata }

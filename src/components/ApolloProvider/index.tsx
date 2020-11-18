@@ -11,7 +11,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 }); 
 
-function AplProvider(props: { children: any; }) {
+function AplProvider(props) {
     const { children } = props;
     return (
         <ApolloProvider client={client}>

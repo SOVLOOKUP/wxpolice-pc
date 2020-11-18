@@ -1,9 +1,14 @@
 import React from 'react'
-import { getdata } from './data';
+import { getdata,getdetaildata } from './data';
 import { Link } from 'react-router-dom';
-import { Button, Field, Table, Card, Pagination, Icon, List, Collapse, Divider, Tag } from '@alifd/next';
+import { Button, Field, Table, Card, Pagination, Icon, List, Collapse, Divider, Tag, Dialog } from '@alifd/next';
 import { PaginatedResult } from 'ahooks/lib/useFusionTable';
 import styles from './index.module.scss';
+import { useParams } from 'ice';
+import { Typography } from '@alifd/next';
+import { useBoolean } from 'ahooks';
+
+const { H1, H2, Paragraph, Text } = Typography;
 
 interface ColumnWidth {
     id: number;
@@ -44,21 +49,134 @@ const columnWidth: ColumnWidth = {
     deadline: 180
   };
 
+  // type detaildata = {
+    // content: string
+    // deadline: number
+    // dispatch_time: number
+    // feedback_id: string
+    // target: Array<number>
+    // task_name: string
+    // template_data: object
+    // template_id: number
+    // id: number
+  // }
+  
+  // type resultData = {
+  //   wxpolice_wx_collects: Array<object>
+  // }
+  
+  type result = {
+    loading: boolean
+    data: object
+  }
+  
+  const DetailDialog: React.Fc = (props: { visible: any; onclose: any; result: result; }) => {
+    const { visible, onclose, result } = props
+  
+    if (result.loading) return <p>Loading...</p>;
+    console.log(result)
+    try {
+      let data = result.data.wxpolice_wx_collects[0]
+  
+      const commonProps = {
+        title: data.submiter_name,
+        // style: { width: 300 },
+        subTitle: data.submiter_uid,
+      extra: <Button text type="primary">{data.task_id}</Button>,
+      };
+
+      const color = ((data.status)===0 ? "red" : "green")
+  const sty = ((data.status)!==1 ? "primary" : "normal")
+  var msg = ((data.status)===1 ? "已确认" : "未确认")
+  if ((data.status)===2) {
+    var msg = "已完成"
+  }
+  
+      return (
+        <Dialog title="任务详情"
+          visible={visible}
+          // width="auto"
+          closeable={true}
+          onClose={onclose}
+          onOk={onclose}
+          footerActions={['ok']}
+          shouldUpdatePosition={true}
+  
+        >
+          <Card free>
+            <Card.Content>
+              <Card free>
+                <Card.Header {...commonProps} />
+                <Card.Divider />
+                <Card.Content>
+                <H2>反馈时间</H2>
+                <Paragraph>
+                  {data.submit_time}
+                </Paragraph>
+
+                <H2>反馈状态</H2>
+                <Paragraph>
+                <div>
+      <Tag type={sty} color={color}>
+        {msg}
+      </Tag>
+      </div>
+                </Paragraph>
+
+                <H2>反馈内容</H2>
+                <Paragraph>
+                  {data.content}
+                </Paragraph>
+
+              </Card.Content>
+  
+              </Card>
+  
+  
+  
+            </Card.Content>
+          </Card>
+        </Dialog>
+      )
+    } catch (error) {
+      console.log(error)
+      return <div></div>
+
+    }
+  
+  
+  
+  }
+
 const cellOperation = (...args: any[]): React.ReactNode => {
     return (
         <div>
-        <Link to="/tasks/detail">
-            <Button
-                text
-                type="primary"
-                onClick={() =>  {}}
-            >
-                详情
+        <Button
+        text
+        type="primary"
+        onClick={() => {
+          console.log(args)
+
+          // setdeatilData
+          args[2](
+            {
+              variables: {
+                id: args[0][2].id,
+              },
+            }
+          )
+
+          // toggle
+          args[1]()
+          
+        }}
+      >
+        详情
             </Button>
-        </Link>
         </div>
     );
 };
+
 // dataIndex="status"
 const cellStatus = (...args: any[]): React.ReactNode => {
   const color = ((args[0])===0 ? "red" : "green")
@@ -68,7 +186,7 @@ const cellStatus = (...args: any[]): React.ReactNode => {
     var msg = "已完成"
   }
 
-  console.log(args)
+  // console.log(args)
   return (
       <div>
       <Tag type={sty} color={color}>
@@ -81,15 +199,17 @@ const cellStatus = (...args: any[]): React.ReactNode => {
 
 
 const TaskDetailTable: React.Fc = () => {
-    
-    const { loading, error, data, fetchMore } = getdata()
-    
-    
+    const { id } = useParams();
+    const { loading, error, data, fetchMore } = getdata(id)
+    const [visible, { toggle, setTrue, setFalse }] = useBoolean(false)
+    let [getddata, result] = getdetaildata()
+
+
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
 
     console.log(data)
-    // todo
+
     const sort = (dataIndex: String, order: String) => undefined
     const filter = (filterParams: Object) => undefined
     const tableProps = {
@@ -101,7 +221,7 @@ const TaskDetailTable: React.Fc = () => {
 
     const loadMore = () => {
       fetchMore({ 
-          variables: { offset: data.wxpolice_wx_collects.length},
+          variables: { id:id,offset: data.wxpolice_wx_collects.length},
           updateQuery: (previousResult, { fetchMoreResult }) => {
             if (!fetchMoreResult) { return previousResult; }
             return Object.assign({}, previousResult, {
@@ -130,7 +250,7 @@ const TaskDetailTable: React.Fc = () => {
               <Table.Column title="提交人" dataIndex="submiter_name" resizable width={columnWidth.submiter_name} />
               <Table.Column title="提交时间" dataIndex="submit_time" resizable width={columnWidth.task_name} />
               <Table.Column title="状态" dataIndex="status" resizable width={columnWidth.target_id} cell={cellStatus}/>
-              <Table.Column title="操作" resizable width={columnWidth.submiter_name} cell={cellOperation} />
+              <Table.Column title="操作" resizable width={columnWidth.submiter_name} cell={(...args) => (cellOperation(args, toggle, getddata))} />
             </Table>
             <br/>
             显示{data.wxpolice_wx_collects.length}/{data.wxpolice_wx_collects_aggregate.aggregate.count}条记录
@@ -140,6 +260,7 @@ const TaskDetailTable: React.Fc = () => {
             
           </Card.Content>
         </Card>
+        <DetailDialog visible={visible} onclose={setFalse} result={result} />
     </div>
     )
   }
