@@ -5,31 +5,21 @@ import styles from './index.module.scss';
 const Guide = () => {
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>Welcome to icejs!</h2>
+      <h2 >欢迎来到微信公众号任务推送平台</h2>
 
-      <p className={styles.description}>This is a awesome project, enjoy it!</p>
+      <p className={styles.description}>项目完善阶段，欢迎向作者（805408477@qq.com）吐槽!</p>
+
 
       <div className={styles.action}>
+      
         <a
-          href="https://ice.work/docs/guide/about"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            marginRight: 20,
-          }}
-        >
-          <Button type="primary" size="large">
-            使用文档
-          </Button>
-        </a>
-        <a
-          href="https://github.com/ice-lab/icejs"
+          href="https://github.com/sovlookup"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Button type="secondary" size="large">
-            GitHub
-          </Button>
+          {/* <Button type="secondary" size="large">
+            作者的GitHub
+          </Button> */}
         </a>
       </div>
     </div>

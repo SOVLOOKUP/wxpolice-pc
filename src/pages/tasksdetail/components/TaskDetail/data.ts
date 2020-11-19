@@ -2,7 +2,7 @@ import { useQuery, gql, useLazyQuery } from '@apollo/client';
 
 const getdata = (id: number, offset: number = 0, limit: number = 20) => useQuery(gql`
 query MyQuery($offset: Int!,$limit: Int!,$id: Int!) {
-  wxpolice_wx_collects(offset: $offset, limit: $limit,where: {task_id: {_eq: $id}}) {
+  wxpolice_wx_collects(offset: $offset, limit: $limit,where: {task_id: {_eq: $id}},order_by: {id: desc}) {
     id
     submiter_name
     submit_time

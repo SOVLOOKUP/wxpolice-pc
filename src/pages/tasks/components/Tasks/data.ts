@@ -7,7 +7,7 @@ const getdata = (offset:number = 0,limit:number = 10) => useQuery(gql`
         count
       }
     }
-    wxpolice_wx_tasks(offset: $offset, limit: $limit) {
+    wxpolice_wx_tasks(offset: $offset, limit: $limit,order_by: {id: desc}) {
       id
       task_name
       target
