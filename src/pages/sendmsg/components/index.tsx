@@ -302,9 +302,9 @@ function Template() {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
-
-    const form = data.wxpolice_wx_form[0].form
-
+    console.log(data)
+    const form = JSON.parse(data.wxpolice_wx_form[0].form)
+    
 
 
   return (
