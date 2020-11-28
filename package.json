@@ -9,6 +9,7 @@
     "@apollo/client": "^3.2.5",
     "ahooks": "^2.7.1",
     "antd": "^4.8.4",
+    "bizcharts": "^4.0.15",
     "form-render": "^0.8.10",
     "graphql": "^15.4.0",
     "moment": "^2.29.1",
