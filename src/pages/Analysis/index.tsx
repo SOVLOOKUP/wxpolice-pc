@@ -16,8 +16,8 @@ const Analysis = () => {
     <ResponsiveGrid gap={20}>
       <Cell colSpan={12}>
         <PageHeader
-          title="分析页面"
-          breadcrumbs={[{ name: 'Dashboard' }, { name: '分析页面' }]}
+          title="主页面"
+          breadcrumbs={[]}
         />
       </Cell>
       <Cell colSpan={12}>
